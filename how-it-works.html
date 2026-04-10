@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>How It Works — Loafer</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --gold: #C9A84C;
+    --gold-light: #E8C96A;
+    --gold-dim: #8C6E2F;
+    --green-deep: #0D1F0F;
+    --green-dark: #152318;
+    --green-mid: #1E3520;
+    --green-accent: #2A4D2C;
+    --cream: #F5F0E8;
+    --cream-dim: #C8C0A8;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--green-deep);
+    color: var(--cream);
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 300;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* NAV */
+  nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.5rem 3rem;
+    border-bottom: 1px solid var(--green-accent);
+  }
+
+  .nav-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.8rem;
+    font-weight: 300;
+    letter-spacing: 0.15em;
+    color: var(--gold);
+    text-decoration: none;
+  }
+
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a {
+    color: var(--cream-dim);
+    text-decoration: none;
+    font-size: 0.68rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    transition: color 0.3s;
+  }
+  .nav-links a:hover { color: var(--gold); }
+
+  .btn-gold {
+    background: var(--gold);
+    color: var(--green-deep);
+    border: none;
+    padding: 0.6rem 1.5rem;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.65rem;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+  .btn-gold:hover { background: var(--gold-light); }
+
+  /* PAGE HERO */
+  .page-hero {
+    text-align: center;
+    padding: 6rem 2rem 4rem;
+    border-bottom: 1px solid var(--green-accent);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .page-hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 50% 80%, rgba(42,77,44,0.35) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .eyebrow {
+    font-size: 0.62rem;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 1.2rem;
+  }
+
+  .page-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2.8rem, 7vw, 5.5rem);
+    font-weight: 300;
+    line-height: 1;
+    color: var(--cream);
+    margin-bottom: 1.2rem;
+  }
+
+  .page-title em { color: var(--gold); font-style: italic; }
+
+  .page-subtitle {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 1.2rem;
+    color: var(--cream-dim);
+    max-width: 500px;
+    margin: 0 auto;
+  }
+
+  /* TOGGLE NAV */
+  .audience-toggle {
+    display: flex;
+    justify-content: center;
+    gap: 0;
+    padding: 3rem 2rem 0;
+  }
+
+  .aud-btn {
+    padding: 0.8rem 3rem;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.68rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    cursor: pointer;
+    border: 1px solid var(--green-accent);
+    background: transparent;
+    color: var(--cream-dim);
+    transition: all 0.3s;
+  }
+
+  .aud-btn.active {
+    background: var(--gold);
+    color: var(--green-deep);
+    border-color: var(--gold);
+    font-weight: 500;
+  }
+
+  /* SECTIONS */
+  .content-block { display: none; }
+  .content-block.visible { display: block; }
+
+  /* JOURNEY */
+  .journey {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 5rem 2rem;
+  }
+
+  .journey-step {
+    display: grid;
+    grid-template-columns: 80px 1fr;
+    gap: 2rem;
+    margin-bottom: 0;
+    position: relative;
+  }
+
+  .journey-step:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    left: 39px;
+    top: 72px;
+    bottom: -2rem;
+    width: 1px;
+    background: linear-gradient(to bottom, var(--gold-dim), transparent);
+  }
+
+  .step-left {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 0.3rem;
+  }
+
+  .step-circle {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    border: 1px solid var(--gold-dim);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.4rem;
+    font-weight: 300;
+    color: var(--gold);
+    background: var(--green-dark);
+    flex-shrink: 0;
+    position: relative;
+    z-index: 1;
+  }
+
+  .step-right {
+    padding-bottom: 4rem;
+  }
+
+  .step-tag {
+    font-size: 0.6rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gold-dim);
+    margin-bottom: 0.5rem;
+  }
+
+  .step-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2rem;
+    font-weight: 300;
+    color: var(--cream);
+    margin-bottom: 0.8rem;
+    line-height: 1.1;
+  }
+
+  .step-body {
+    font-size: 0.82rem;
+    color: var(--cream-dim);
+    line-height: 1.95;
+    max-width: 560px;
+  }
+
+  .step-callout {
+    display: inline-block;
+    border-left: 2px solid var(--gold);
+    padding: 0.8rem 1.2rem;
+    margin-top: 1.2rem;
+    background: var(--green-dark);
+    font-size: 0.78rem;
+    color: var(--cream-dim);
+    font-style: italic;
+    line-height: 1.7;
+  }
+
+  .step-callout strong { color: var(--gold); font-style: normal; font-weight: 400; }
+
+  /* TIERS MINI */
+  .tiers-mini {
+    background: var(--green-dark);
+    padding: 4rem 2rem;
+    margin: 2rem 0;
+  }
+
+  .tiers-mini-inner { max-width: 900px; margin: 0 auto; }
+
+  .tiers-mini h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.6rem;
+    font-weight: 300;
+    color: var(--cream);
+    margin-bottom: 2rem;
+    text-align: center;
+  }
+
+  .tiers-mini-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--green-accent);
+    border: 1px solid var(--green-accent);
+  }
+
+  .tier-mini-item {
+    background: var(--green-dark);
+    padding: 2rem 1.5rem;
+    text-align: center;
+  }
+
+  .tier-mini-item.highlight { background: var(--green-mid); }
+
+  .tier-mini-label {
+    font-size: 0.58rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gold-dim);
+    margin-bottom: 0.5rem;
+  }
+
+  .tier-mini-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.5rem;
+    color: var(--cream);
+    margin-bottom: 0.5rem;
+  }
+
+  .tier-mini-qual {
+    font-size: 0.72rem;
+    color: var(--gold);
+    margin-bottom: 0.8rem;
+    line-height: 1.5;
+  }
+
+  .tier-mini-price {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2rem;
+    color: var(--cream-dim);
+  }
+
+  .tier-mini-price span { font-size: 0.8rem; color: var(--gold-dim); }
+
+  /* PHOTO REQS */
+  .photo-req-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin-top: 1.5rem;
+    max-width: 420px;
+  }
+
+  .photo-req {
+    border: 1px solid var(--green-accent);
+    padding: 1.2rem 1rem;
+    text-align: center;
+    transition: border-color 0.3s;
+  }
+
+  .photo-req:hover { border-color: var(--gold-dim); }
+
+  .photo-req-icon {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .photo-req p {
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--cream-dim);
+  }
+
+  /* FAQ */
+  .faq-section {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 5rem 2rem;
+  }
+
+  .faq-header {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.2rem;
+    font-weight: 300;
+    color: var(--cream);
+    margin-bottom: 2.5rem;
+    text-align: center;
+  }
+
+  .faq-item {
+    border-bottom: 1px solid var(--green-accent);
+    padding: 1.2rem 0;
+    cursor: pointer;
+  }
+
+  .faq-q {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.85rem;
+    color: var(--cream);
+    letter-spacing: 0.02em;
+    gap: 1rem;
+  }
+
+  .faq-icon {
+    color: var(--gold);
+    font-size: 1.2rem;
+    flex-shrink: 0;
+    transition: transform 0.3s;
+  }
+
+  .faq-a {
+    font-size: 0.78rem;
+    color: var(--cream-dim);
+    line-height: 1.9;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease, padding 0.3s;
+  }
+
+  .faq-item.open .faq-a { max-height: 200px; padding-top: 0.8rem; }
+  .faq-item.open .faq-icon { transform: rotate(45deg); }
+
+  /* CTA BAND */
+  .cta-band {
+    background: var(--green-dark);
+    border-top: 1px solid var(--green-accent);
+    border-bottom: 1px solid var(--green-accent);
+    padding: 5rem 2rem;
+    text-align: center;
+  }
+
+  .cta-band h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 300;
+    color: var(--cream);
+    margin-bottom: 0.6rem;
+  }
+
+  .cta-band h2 em { color: var(--gold); font-style: italic; }
+
+  .cta-band p {
+    font-size: 0.82rem;
+    color: var(--cream-dim);
+    margin-bottom: 2rem;
+  }
+
+  .cta-pair { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+
+  .btn-outline {
+    background: transparent;
+    color: var(--gold);
+    border: 1px solid var(--gold-dim);
+    padding: 0.9rem 2rem;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.68rem;
+    font-weight: 400;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: all 0.3s;
+  }
+  .btn-outline:hover { border-color: var(--gold); color: var(--gold-light); }
+
+  /* FOOTER */
+  footer {
+    padding: 2.5rem 3rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+    border-top: 1px solid var(--green-accent);
+  }
+
+  .footer-logo { font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; color: var(--gold); letter-spacing: 0.1em; }
+  .footer-copy { font-size: 0.65rem; color: var(--gold-dim); }
+
+  @media (max-width: 700px) {
+    nav { padding: 1.2rem 1.5rem; }
+    .nav-links { display: none; }
+    .tiers-mini-grid { grid-template-columns: 1fr; }
+    .photo-req-grid { grid-template-columns: repeat(3, 1fr); }
+    .journey-step { grid-template-columns: 48px 1fr; gap: 1rem; }
+    .step-circle { width: 44px; height: 44px; font-size: 1.1rem; }
+    .journey-step::after { left: 22px !important; }
+    footer { flex-direction: column; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">Loafer</a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="how-it-works.html">How It Works</a></li>
+    <li><a href="index.html#tiers">Membership</a></li>
+  </ul>
+  <a href="index.html#join" class="btn-gold">Join Waitlist</a>
+</nav>
+
+<!-- HERO -->
+<section class="page-hero">
+  <p class="eyebrow">Transparency & Trust</p>
+  <h1 class="page-title">How <em>Loafer</em> Works</h1>
+  <p class="page-subtitle">Everything you need to know before you apply.</p>
+</section>
+
+<!-- AUDIENCE TOGGLE -->
+<div class="audience-toggle">
+  <button class="aud-btn active" onclick="showAudience('men', this)">For Men</button>
+  <button class="aud-btn" onclick="showAudience('women', this)">For Women</button>
+</div>
+
+<!-- ======= MEN ======= -->
+<div id="men-content" class="content-block visible">
+
+  <div class="journey">
+
+    <div class="journey-step">
+      <div class="step-left"><div class="step-circle">1</div></div>
+      <div class="step-right">
+        <p class="step-tag">Step One</p>
+        <h2 class="step-title">Apply & Verify Your Standing</h2>
+        <p class="step-body">
+          Loafer is not for everyone — and that's the point. Men apply by submitting proof of financial standing. We accept bank statements, tax returns, brokerage account summaries, or a letter from a CPA or financial advisor. Our team reviews every application personally.
+        </p>
+        <div class="step-callout">
+          <strong>Your data stays private.</strong> Financial documents are reviewed for tier qualification only and never shared with other members or third parties.
+        </div>
+      </div>
+    </div>
+
+    <div class="journey-step">
+      <div class="step-left"><div class="step-circle">2</div></div>
+      <div class="step-right">
+        <p class="step-tag">Step Two</p>
+        <h2 class="step-title">Choose Your Tier</h2>
+        <p class="step-body">
+          Based on your verified assets or income, you'll be placed in one of three tiers. Your tier determines your membership price and the depth of access you receive. All tiers unlock the full swipe experience — higher tiers unlock priority placement, concierge features, and exclusive events.
+        </p>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- TIERS MINI -->
+  <div class="tiers-mini">
+    <div class="tiers-mini-inner">
+      <h3>The Three Tiers</h3>
+      <div class="tiers-mini-grid">
+        <div class="tier-mini-item">
+          <p class="tier-mini-label">Level I</p>
+          <p class="tier-mini-name">The Loafer</p>
+          <p class="tier-mini-qual">$250K income<br>or $1M+ assets</p>
+          <p class="tier-mini-price">$49<span>/mo</span></p>
+        </div>
+        <div class="tier-mini-item highlight">
+          <p class="tier-mini-label">Level II</p>
+          <p class="tier-mini-name">The Patron</p>
+          <p class="tier-mini-qual">$8M+ in<br>verified assets</p>
+          <p class="tier-mini-price">$149<span>/mo</span></p>
+        </div>
+        <div class="tier-mini-item">
+          <p class="tier-mini-label">Level III</p>
+          <p class="tier-mini-name">The Principal</p>
+          <p class="tier-mini-qual">$50M+ in<br>verified assets</p>
+          <p class="tier-mini-price">$499<span>/mo</span></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="journey">
+
+    <div class="journey-step">
+      <div class="step-left"><div class="step-circle">3</div></div>
+      <div class="step-right">
+        <p class="step-tag">Step Three</p>
+        <h2 class="step-title">Build Your Profile</h2>
+        <p class="step-body">
+          Upload your photos, write a short bio, and set your preferences. Your verified tier badge appears prominently on your profile — it signals to women that you've been vetted. No fake claims. No bluster. Just proof.
+        </p>
+        <div class="step-callout">
+          <strong>Authenticity is the currency here.</strong> Members who present themselves honestly get better matches.
+        </div>
+      </div>
+    </div>
+
+    <div class="journey-step">
+      <div class="step-left"><div class="step-circle">4</div></div>
+      <div class="step-right">
+        <p class="step-tag">Step Four</p>
+        <h2 class="step-title">Swipe & Match</h2>
+        <p class="step-body">
+          Browse profiles of verified women. Swipe right on those you're interested in. When she swipes right on you too, it's a match. Unlike other apps, there's no power imbalance in the match stage — both sides have to want it.
+        </p>
+      </div>
+    </div>
+
+    <div class="journey-step">
+      <div class="step-left"><div class="step-circle">5</div></div>
+      <div class="step-right">
+        <p class="step-tag">Step Five</p>
+        <h2 class="step-title">You Initiate. Always.</h2>
+        <p class="step-body">
+          Once matched, the man opens the conversation. You have <strong style="color:var(--gold); font-weight:400;">24 hours</strong> from the time of the match to send the first message. If you don't, the match expires. This keeps the experience intentional — no ghost matches, no stale queues. If you matched, mean it.
+        </p>
+        <div class="step-callout">
+          This is the core of Loafer. <strong>Men lead. Women decide whether to continue.</strong> It's a simple dynamic that creates real accountability on both sides.
+        </div>
+      </div>
+    </div>
+
+    <div class="journey-step">
+      <div class="step-left"><div class="step-circle">6</div></div>
+      <div class="step-right">
+        <p class="step-tag">Step Six</p>
+        <h2 class="step-title">Take It Offline</h2>
+        <p class="step-body">
+          Loafer exists to create real-world connections. Premium members get access to exclusive Loafer events — private dinners, curated social experiences — where verified members meet in person in a relaxed, elegant environment.
+        </p>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ======= WOMEN ======= -->
+<div id="women-content" class="content-block">
+
+  <div class="journey">
+
+    <div class="journey-step">
+      <div class="step-left"><div class="step-circle">1</div></div>
+      <div class="step-right">
+        <p class="step-tag">Step One</p>
+        <h2 class="step-title">Sign Up for $2.99/month</h2>
+        <p class="step-body">
+          Women join Loafer for just $2.99 a month — less than a coffee. There's no income requirement, no asset verification, and no gatekeeping beyond the photo requirements. The low price keeps the community serious without being exclusionary.
+        </p>
+        <div class="step-callout">
+          <strong>Why charge women at all?</strong> A small fee filters out fake accounts and bots, keeping the pool genuine. $2.99 is intentionally accessible — it's about intent, not income.
+        </div>
+      </div>
+    </div>
+
+    <div class="journey-step">
+      <div class="step-left"><div class="step-circle">2</div></div>
+      <div class="step-right">
+        <p class="step-tag">Step Two</p>
+        <h2 class="step-title">Submit Your Three Required Photos</h2>
+        <p class="step-body">
+          Loafer requires three specific photos from every woman. This isn't about judgment — it's about authenticity. Men on this platform are making serious decisions about serious relationships. They deserve to see the real you.
+        </p>
+        <div class="photo-req-grid">
+          <div class="photo-req">
+            <div class="photo-req-icon">🤳</div>
+            <p>Face Photo</p>
+          </div>
+          <div class="photo-req">
+            <div class="photo-req-icon">✦</div>
+            <p>No Makeup</p>
+          </div>
+          <div class="photo-req">
+            <div class="photo-req-icon">◈</div>
+            <p>Full Body</p>
+          </div>
+        </div>
+        <div class="step-callout" style="margin-top: 1.5rem;">
+          <strong>Photos are reviewed by our team</strong> before your profile goes live — to ensure guidelines are met, not to score or rank you. The men make their own choices.
+        </div>
+      </div>
+    </div>
+
+    <div class="journey-step">
+      <div class="step-left"><div class="step-circle">3</div></div>
+      <div class="step-right">
+        <p class="step-tag">Step Three</p>
+        <h2 class="step-title">Build Your Profile</h2>
+        <p class="step-body">
+          Write a short bio. Add more photos if you want. Set your preferences for the kind of man you're interested in. Your profile is your voice — make it honest and make it you.
+        </p>
+      </div>
+    </div>
+
+    <div class="journey-step">
+      <div class="step-left"><div class="step-circle">4</div></div>
+      <div class="step-right">
+        <p class="step-tag">Step Four</p>
+        <h2 class="step-title">Swipe & Match</h2>
+        <p class="step-body">
+          Browse profiles of verified, financially screened men. Every man you see has been vetted — their tier badge tells you exactly what's been confirmed. Swipe right on the ones you're interested in. When he swipes right too, it's a match.
+        </p>
+        <div class="step-callout">
+          <strong>You always know what you're working with.</strong> Level I, II, and III badges are earned through verification — not self-reported.
+        </div>
+      </div>
+    </div>
+
+    <div class="journey-step">
+      <div class="step-left"><div class="step-circle">5</div></div>
+      <div class="step-right">
+        <p class="step-tag">Step Five</p>
+        <h2 class="step-title">He Reaches Out. You Decide.</h2>
+        <p class="step-body">
+          On Loafer, the man always sends the first message. He has 24 hours after a match to initiate — if he doesn't, the match expires. When he does write to you, you're completely in control of what happens next. Reply, ignore, or unmatch — it's always your call.
+        </p>
+        <div class="step-callout">
+          <strong>No pressure. No obligation.</strong> A match is just an expression of mutual interest. Where it goes from there is entirely up to you.
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- FAQ -->
+<div style="background: var(--green-dark); border-top: 1px solid var(--green-accent);">
+  <div class="faq-section">
+    <h2 class="faq-header">Common Questions</h2>
+
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-q">
+        <span>How is financial verification handled?</span>
+        <span class="faq-icon">+</span>
+      </div>
+      <div class="faq-a">Men submit financial documents (bank statements, tax returns, or a CPA letter) through our secure upload portal. Our team reviews them manually. Documents are never shared with other members and are deleted after verification is complete.</div>
+    </div>
+
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-q">
+        <span>What if a man doesn't initiate within 24 hours?</span>
+        <span class="faq-icon">+</span>
+      </div>
+      <div class="faq-a">The match expires automatically. Neither party is notified — it simply disappears. This keeps the experience clean and intentional. Men who are serious will reach out. Those who aren't won't clog up your match queue.</div>
+    </div>
+
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-q">
+        <span>Can women initiate conversation?</span>
+        <span class="faq-icon">+</span>
+      </div>
+      <div class="faq-a">No. This is a core design decision. Loafer is built around the man initiating — it creates accountability and filters for men who are genuinely interested. Women can express interest by swiping right, but the first message always comes from the man.</div>
+    </div>
+
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-q">
+        <span>Is my financial information secure?</span>
+        <span class="faq-icon">+</span>
+      </div>
+      <div class="faq-a">Yes. All documents are transmitted over encrypted connections, stored in secured environments, and reviewed only by authorized Loafer team members. We take data privacy extremely seriously — your financial details are never visible to other members.</div>
+    </div>
+
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-q">
+        <span>What are the photo requirements for women?</span>
+        <span class="faq-icon">+</span>
+      </div>
+      <div class="faq-a">Three photos are required: a clear face photo, a photo without makeup, and a full-body photo. Additional photos are welcome. Photos go through a brief team review to ensure they meet guidelines before the profile goes live. This is not a scoring process — it's a verification that requirements are met.</div>
+    </div>
+
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-q">
+        <span>What's the difference between the three men's tiers?</span>
+        <span class="faq-icon">+</span>
+      </div>
+      <div class="faq-a">All tiers get access to the full swipe and match experience. Level II (The Patron) adds priority placement and unlimited matches. Level III (The Principal) adds concierge matching, exclusive event access, and white-glove onboarding. Every tier badge is verified — members can trust what they see.</div>
+    </div>
+
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-q">
+        <span>Can I cancel my membership?</span>
+        <span class="faq-icon">+</span>
+      </div>
+      <div class="faq-a">Yes, anytime. There are no contracts or long-term commitments. Cancel through your account settings and your membership remains active until the end of your billing period.</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- CTA -->
+<div class="cta-band">
+  <h2>Ready to <em>Apply?</em></h2>
+  <p>Join the waitlist and be among the first verified members.</p>
+  <div class="cta-pair">
+    <a href="index.html#join" class="btn-gold">Join as a Man</a>
+    <a href="index.html#join" class="btn-outline">Join as a Woman — $2.99/mo</a>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-logo">Loafer</div>
+  <span class="footer-copy">© 2025 Loafer. All rights reserved.</span>
+</footer>
+
+<script>
+  function showAudience(type, btn) {
+    document.querySelectorAll('.aud-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('men-content').classList.toggle('visible', type === 'men');
+    document.getElementById('women-content').classList.toggle('visible', type === 'women');
+  }
+
+  function toggleFaq(el) {
+    const wasOpen = el.classList.contains('open');
+    document.querySelectorAll('.faq-item').forEach(f => f.classList.remove('open'));
+    if (!wasOpen) el.classList.add('open');
+  }
+</script>
+
+</body>
+</html>
